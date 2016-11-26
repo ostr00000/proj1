@@ -8,23 +8,25 @@ import java.util.Scanner;
 public class Wczytaj {
 
 	public static Konstytucja odczytaj(String nazwa) {
-		Konstytucja kon=new Konstytucja();
+		Konstytucja kon = new Konstytucja();
 		try (Scanner scan = new Scanner(new BufferedReader(new FileReader(nazwa)))) {
 			Artykul art = new Artykul();
 			int liczbaPomin = 0;
 			String fragment = "";
 			Boolean sprawdzLiczbe, ostatnioArtyk = false;
-			String dodatkowy = "";
+			String dodatkowy = "", s;
 			while (scan.hasNext()) {
-				if (scan.hasNextInt())
+				if (scan.hasNextInt()) {
 					sprawdzLiczbe = true;
-				else
+					int nr = scan.nextInt();
+					dodatkowy = String.valueOf(nr);
+				} else {
 					sprawdzLiczbe = false;
-				String s = scan.next();
-				if (sprawdzLiczbe == true) {
-					dodatkowy = s;
-					s = scan.next();
+
 				}
+
+				s = scan.next();
+
 				if (liczbaPomin == 0) {
 					switch (s) {
 					case "©Kancelaria":
@@ -43,15 +45,22 @@ public class Wczytaj {
 							sprawdzLiczbe = false;
 							if (ostatnioArtyk == true) {
 								ostatnioArtyk = false;
-								fragment = fragment + dodatkowy + s;
-								break;
+								fragment = fragment + " " + dodatkowy + " " + s;
+							} else {
+								art.add(fragment);
+								fragment = dodatkowy + " " + s;
 							}
-							art.add(fragment);
-							fragment = dodatkowy + s;
 							break;
+
 						}
 					default:
-						fragment = fragment + s;
+						if (sprawdzLiczbe == true) {
+							sprawdzLiczbe=false;
+							fragment = fragment + " " + dodatkowy + " " + s;
+
+						} else {
+							fragment = fragment + " " + s;
+						}
 					}
 				} else {
 					liczbaPomin--;

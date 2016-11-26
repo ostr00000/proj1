@@ -1,7 +1,7 @@
 package agh.obiektow.proj;
 
 public class Artykul {
-	String napis;
+	String napis="";
 
 	public Artykul() {
 	}
