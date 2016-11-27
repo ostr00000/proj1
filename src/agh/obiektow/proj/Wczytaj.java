@@ -10,11 +10,16 @@ public class Wczytaj {
 	public static Konstytucja odczytaj(String nazwa) {
 		Konstytucja kon = new Konstytucja();
 		try (Scanner scan = new Scanner(new BufferedReader(new FileReader(nazwa)))) {
-			Artykul art = new Artykul();
+			Rozdzial rozd = new Rozdzial(0);
+			int rozdNr = 1;
+			Artykul art = new Artykul(0);
+			int artNr = 1;
+
 			int liczbaPomin = 0;
 			String fragment = "";
 			Boolean sprawdzLiczbe, ostatnioArtyk = false;
 			String dodatkowy = "", s;
+
 			while (scan.hasNext()) {
 				if (scan.hasNextInt()) {
 					sprawdzLiczbe = true;
@@ -22,7 +27,6 @@ public class Wczytaj {
 					dodatkowy = String.valueOf(nr);
 				} else {
 					sprawdzLiczbe = false;
-
 				}
 
 				s = scan.next();
@@ -35,9 +39,18 @@ public class Wczytaj {
 					case "Art.":
 						art.add(fragment);
 						fragment = s;
-						kon.addArt(art);
-						art = new Artykul();
+						rozd.addArt(art);
+						art = new Artykul(artNr++);
 						ostatnioArtyk = true;
+						break;
+					case "Rozdzia³":
+						art.add(fragment);
+						fragment = s;
+						rozd.addArt(art);
+						artNr = 1;
+						art = new Artykul(artNr++);
+						kon.addRozdz(rozd);
+						rozd = new Rozdzial(rozdNr++);
 						break;
 					case ")":
 					case ".":
@@ -45,17 +58,18 @@ public class Wczytaj {
 							sprawdzLiczbe = false;
 							if (ostatnioArtyk == true) {
 								ostatnioArtyk = false;
-								fragment = fragment + " " + dodatkowy + " " + s;
+								art.add(fragment);
+								fragment = dodatkowy + s;/// sprawdzic czy dodaæ
+															/// +" "+
 							} else {
 								art.add(fragment);
 								fragment = dodatkowy + " " + s;
 							}
 							break;
-
 						}
 					default:
 						if (sprawdzLiczbe == true) {
-							sprawdzLiczbe=false;
+							sprawdzLiczbe = false;
 							fragment = fragment + " " + dodatkowy + " " + s;
 
 						} else {

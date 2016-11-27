@@ -4,23 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Konstytucja {
-	List<Artykul> art;
+	List<Rozdzial> rozd;
 
 	public Konstytucja() {
-		art=new ArrayList<>();
+		rozd = new ArrayList<>();
 	}
-	
-	public void addArt(Artykul a){
-		art.add(a);
+
+	public void addRozdz(Rozdzial r) {
+		rozd.add(r);
 	}
-	public String getArt(int nr){
-		return art.get(nr).toString();
+
+	public String getRozdz(int nr) {
+		return rozd.get(nr).toString();
 	}
-	public String getArt(int nrA,int nrB){
-		StringBuilder ret = new StringBuilder(art.get(nrA++).toString());
-		while(nrA<=nrB){
-			ret.append(art.get(nrA++).toString());
-		}
-		return ret.toString();
+
+	public String getRozdzialArt(int roz, int art) {
+		return rozd.get(roz).getArt(art).toString();
+	}
+
+	public String getRozdzialArt(int roz, int artstart, int artend) {
+		return rozd.get(roz).getArt(artstart,artend).toString();
 	}
 }
