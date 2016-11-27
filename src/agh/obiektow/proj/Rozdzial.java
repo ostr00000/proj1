@@ -5,11 +5,15 @@ import java.util.List;
 
 public class Rozdzial {
 	List<Artykul> art;
+	String nag;
 	int rozdNr;
 	
 	Rozdzial(int nr){
 		this.rozdNr=nr;
 		art=new ArrayList<>();
+	}
+	public void setNag(String nag){
+		this.nag=nag;
 	}
 	
 	@Override
