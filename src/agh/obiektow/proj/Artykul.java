@@ -9,10 +9,12 @@ public class Artykul {
 	}
 	
 	public void add(String s){
-		napis=napis+" "+s;
+		if(napis.equals(""))napis=s;
+		else napis=napis+" "+s;
 	}
 	public void addln(String s) {
-		napis=napis+"\n"+s;		
+		if(napis.equals(""))napis=s;
+		else napis=napis+"\n"+s;		
 	}
 	public void addNoSpace(String s){
 		napis=napis+s;
