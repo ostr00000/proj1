@@ -20,6 +20,7 @@ public class Wczytaj3 {
 		Konstytucja kon = new Konstytucja();
 		try (Scanner scan = new Scanner(new BufferedReader(new FileReader(nazwa)))) {
 			Rozdzial rozd = new Rozdzial(0);
+			rozd.setNag("KONSTYTUCJA RP");
 			int rozdNr = 1;
 			Artykul art = new Artykul(0);
 			int artNr = 1;
@@ -38,6 +39,7 @@ public class Wczytaj3 {
 					art = new Artykul(artNr++);
 					art.add(s);
 					System.out.println("utworzono nowy artykul " + s);
+					nowaLinia = true;
 					continue;
 				}
 				// utworzenie nowego rozdzialu
@@ -57,23 +59,26 @@ public class Wczytaj3 {
 				}
 				// przejscie do nowej lini np. "32)","9."
 				if (newLine.matcher(s).matches()) {
-					nowaLinia = true;
+					nowaLinia = false;
+					art.addln();
 					System.out.println("dodano \"\\n\" a nastepnie: ");
 				}
 				// koniec lini np."urzeczywistniaj¹-"
 				if (endLine.matcher(s).matches()) {
 					s = s.substring(0, s.length() - 1);
-					if (nowaLinia) {
-						nowaLinia = false;
-						art.addln(s);
-					} else if (lastMinus) {
+					if (lastMinus) {
 						lastMinus = false;
 						art.addNoSpace(s);
+						System.out.println("dolaczono: " + s);
 					} else {
+						if (nowaLinia) {
+							nowaLinia = false;
+							art.addln();
+						}
 						art.add(s);
+						System.out.println("dodano: " + s);
 					}
 					lastMinus = true;
-					System.out.println("dodano: " + s);
 					continue;
 				}
 				// normalnie (ze spacja albo bez)
@@ -82,6 +87,10 @@ public class Wczytaj3 {
 					art.addNoSpace(s);
 					System.out.println("dolaczono: " + s);
 				} else {
+					if (nowaLinia) {
+						nowaLinia = false;
+						art.addln();
+					}
 					art.add(s);
 					System.out.println("dodano: " + s);
 				}
