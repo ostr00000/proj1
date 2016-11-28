@@ -10,7 +10,8 @@ import java.util.regex.Pattern;
 public class Read {
 
 	public static Konstytucja odczytaj(String nazwa) {
-		Pattern newArt = Pattern.compile("Art\\. [0-9]+\\.");
+		Pattern newArt = Pattern.compile("Art\\.");
+		Pattern newArt2 = Pattern.compile("[0-9]+\\.");
 		Pattern pomin = Pattern.compile("©Kancelaria");
 		Pattern pomin2 = Pattern.compile("Sejmu");
 		Pattern pomin3 = Pattern.compile("[0-9\\-]+");
@@ -33,7 +34,7 @@ public class Read {
 					System.out.println("artykul " + s);
 					rozd.addArt(art);
 					art = new Artykul(artNr++);
-					art.addnl(s);
+					art.addln(s);
 				} else if (omijaj(scan, pomin)) { // Pominiecie
 					if (omijaj(scan, pomin2))
 						if (omijaj(scan, pomin3))
@@ -48,7 +49,7 @@ public class Read {
 					art = new Artykul(artNr = 0);
 				} else if (scan.hasNext(newLine)) { // Wypunktownie 1) 1.
 					s = scan.next(newLine);
-					art.addnl(s);
+					art.addln(s);
 					System.out.println("wypunktowanie " + s);
 				} else if (scan.hasNext(endLine)) { // koniec lini "zadlugie-"
 					if (scan.hasNext(endLineRead))

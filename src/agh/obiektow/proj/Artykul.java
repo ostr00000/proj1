@@ -11,16 +11,15 @@ public class Artykul {
 	public void add(String s){
 		napis=napis+" "+s;
 	}
-
+	public void addln(String s) {
+		napis=napis+"\n"+s;		
+	}
+	public void addNoSpace(String s){
+		napis=napis+s;
+	}
 	@Override
 	public String toString() {
 		return napis;
-	}
-	public void addbezspacji(String s){
-		napis=napis+s;
-	}
-	public void addnl(String s) {
-		napis=napis+s+"\n";		
 	}
 
 }
