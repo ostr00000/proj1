@@ -26,6 +26,7 @@ public class Wczytaj3 {
 			int artNr = 1;
 			Boolean lastMinus = false;
 			Boolean nowaLinia = false;
+			Boolean wielkaLitera =false;
 			while (scan.hasNextLine()) {
 				String s = scan.nextLine();
 				// pominiecie
@@ -53,9 +54,16 @@ public class Wczytaj3 {
 				}
 				// Cala linia zapisana np. "KONSTYTUCJA"
 				if (wielkieLitery.matcher(s).matches()) {
+					if(wielkaLitera){
+						rozd.dolaczNag(s);
+					}else{
 					rozd.setPodNag(s);
+					}
+					wielkaLitera=true;
 					System.out.println("dodano subnaglowek: " + s);
 					continue;
+				}else{
+					wielkaLitera=false;
 				}
 				// przejscie do nowej lini np. "32)","9."
 				if (newLine.matcher(s).matches()) {

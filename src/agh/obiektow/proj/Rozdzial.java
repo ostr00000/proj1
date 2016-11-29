@@ -22,7 +22,11 @@ public class Rozdzial {
 	public void setPodNag(String s) {
 		int lastArt = art.size();
 		this.pod.add(new Podtytul(s, lastArt));
-
+	}
+	public void dolaczNag(String s){
+		String last=this.pod.remove(this.pod.size()-1).toString();
+		last=last+" "+s;
+		this.setPodNag(last);
 	}
 
 	@Override
