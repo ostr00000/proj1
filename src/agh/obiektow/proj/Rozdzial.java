@@ -13,6 +13,7 @@ public class Rozdzial {
 		this.rozdNr = nr;
 		art = new ArrayList<>();
 		pod = new ArrayList<>();
+		nag = null;
 	}
 
 	public void setNag(String nag) {
@@ -23,15 +24,16 @@ public class Rozdzial {
 		int lastArt = art.size();
 		this.pod.add(new Podtytul(s, lastArt));
 	}
-	public void dolaczNag(String s){
-		String last=this.pod.remove(this.pod.size()-1).toString();
-		last=last+" "+s;
+
+	public void dolaczNag(String s) {
+		String last = this.pod.remove(this.pod.size() - 1).toString();
+		last = last + " " + s;
 		this.setPodNag(last);
 	}
 
 	@Override
 	public String toString() {
-		return this.getArt(0, art.size() - 1);
+		return this.getArt(1, art.size());
 	}
 
 	public void addArt(Artykul a) {
@@ -40,51 +42,54 @@ public class Rozdzial {
 
 	public String getArt(int nr) {
 		if (nr > art.size() || nr <= 0)
-			throw new ArrayIndexOutOfBoundsException("nie ma atykulu o nr. " + nr);
-		String ret = this.nag + "\n" + this.pod.get(0) + "\n";
-		int pozycja = 1;
-		int indexDopasowany = 0;
-		while (pozycja < this.pod.size()) {
-			int geted = this.pod.get(pozycja++).lastArt();
-			if (geted < nr)
-				indexDopasowany = geted;
-			else
-				break;
-		}
+			throw new ArrayIndexOutOfBoundsException("nie ma atykulu o nr. " + nr+" w rozdziale "+ rozdNr);
+		String ret = this.getTitle();
+		int indexDopasowany=this.dopasujIndex(0,nr);
 		if (indexDopasowany != 0) {
 			ret = ret + this.pod.get(indexDopasowany).toString() + "\n";
 		}
-
 		ret = ret + this.art.get(--nr).toString();
 		return ret;
 	}
 
 	public String getArt(int nrA, int nrB) {
 		if (nrA <= 0)
-			throw new ArrayIndexOutOfBoundsException("nie ma atykulu o nr. " + nrA);
-		if (nrB >= art.size())
-			throw new ArrayIndexOutOfBoundsException("nie ma atykulu o nr. " + nrB);
+			throw new ArrayIndexOutOfBoundsException("nie ma atykulu o nr. " + nrA +" w rozdziale "+ rozdNr);
+		if (nrB > art.size())
+			throw new ArrayIndexOutOfBoundsException("nie ma atykulu o nr. " + nrB+" w rozdziale "+ rozdNr);
 		if (nrA > nrB)
 			throw new ArrayIndexOutOfBoundsException("1. arg. " + nrA + " ma byc niewiekszy niz 2. arg. " + nrB);
-
-		String ret = this.nag + "\n" + this.pod.get(0) + "\n";
-		// this.art.get(nrA++);
-		int pozycja = 1;
-		while (nrA <= nrB) {
-			int indexDopasowany = 0;
-			while (pozycja < this.pod.size()) {
-				int geted = this.pod.get(pozycja).lastArt();
-				if (geted < nrA) {
-					pozycja++;
-					indexDopasowany = geted;
-				} else
-					break;
-			}
+		String ret = this.getTitle();
+		int indexDopasowany=this.dopasujIndex(0,nrA);
+		do{
 			if (indexDopasowany != 0) {
 				ret = ret + this.pod.get(indexDopasowany).toString() + "\n";
 			}
-			ret = ret + this.art.get(nrA++).toString() + "\n";
-		}
+			ret = ret + this.art.get(nrA - 1).toString() + "\n";
+			nrA++;
+			indexDopasowany=this.dopasujIndex(nrA-1, nrA);
+		}while (nrA <= nrB);
 		return ret;
+	}
+	
+	private String getTitle(){
+		String ret = "";
+		if (this.nag != null)
+			ret = this.nag + "\n";
+		if (this.pod.size() != 0)
+			ret = ret + this.pod.get(0) + "\n";
+		return ret;
+	}
+	private int dopasujIndex(int pozycja,int nr){
+		int indexDopasowany = 0;
+		while (pozycja < this.pod.size()) {
+			int geted = this.pod.get(pozycja).lastArt();
+			if (geted < nr) {
+				pozycja++;
+				indexDopasowany = geted;
+			} else
+				break;
+		}
+		return indexDopasowany;
 	}
 }

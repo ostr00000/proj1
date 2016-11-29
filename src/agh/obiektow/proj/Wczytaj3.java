@@ -20,13 +20,13 @@ public class Wczytaj3 {
 		Konstytucja kon = new Konstytucja();
 		try (Scanner scan = new Scanner(new BufferedReader(new FileReader(nazwa)))) {
 			Rozdzial rozd = new Rozdzial(0);
-			rozd.setNag("KONSTYTUCJA RP");
 			int rozdNr = 1;
 			Artykul art = new Artykul(0);
 			int artNr = 1;
 			Boolean lastMinus = false;
 			Boolean nowaLinia = false;
-			Boolean wielkaLitera =false;
+			Boolean wczytanyNag = false;
+			Boolean nowyRozdzial = false;
 			while (scan.hasNextLine()) {
 				String s = scan.nextLine();
 				// pominiecie
@@ -36,7 +36,9 @@ public class Wczytaj3 {
 				}
 				// utworzenie nowego artykulu
 				if (newArt.matcher(s).matches()) {
-					rozd.addArt(art);
+					if (!nowyRozdzial)
+						rozd.addArt(art);
+					nowyRozdzial = false;
 					art = new Artykul(artNr++);
 					art.add(s);
 					System.out.println("utworzono nowy artykul " + s);
@@ -50,20 +52,22 @@ public class Wczytaj3 {
 					rozd = new Rozdzial(rozdNr++);
 					rozd.setNag(s);
 					System.out.println("utworzono nowy rozdzial: " + s);
+					nowyRozdzial = true;
 					continue;
 				}
 				// Cala linia zapisana np. "KONSTYTUCJA"
 				if (wielkieLitery.matcher(s).matches()) {
-					if(wielkaLitera){
-						rozd.dolaczNag(s);
-					}else{
-					rozd.setPodNag(s);
+					if (!wczytanyNag) {
+						kon.setNag(s);
+						kon.setNag(scan.nextLine());
+						kon.setNag(scan.nextLine());
+						wczytanyNag = true;
+						System.out.println("dodano tytul kon");
+					} else {
+						rozd.setPodNag(s);
+						System.out.println("dodano subnaglowek: " + s);
 					}
-					wielkaLitera=true;
-					System.out.println("dodano subnaglowek: " + s);
 					continue;
-				}else{
-					wielkaLitera=false;
 				}
 				// przejscie do nowej lini np. "32)","9."
 				if (newLine.matcher(s).matches()) {
