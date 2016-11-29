@@ -5,11 +5,10 @@ import java.util.List;
 
 public class Konstytucja {
 	List<Rozdzial> rozd;
-	String naglowek;
+	String naglowek = "";
 
 	public Konstytucja() {
 		this.rozd = new ArrayList<>();
-		naglowek = "";
 	}
 
 	public void setNag(String nag) {
@@ -23,21 +22,44 @@ public class Konstytucja {
 		this.rozd.add(r);
 	}
 
-	public String getRozdz(int nr) {
-		if (nr >= this.rozd.size() || nr < 0)
-			throw new ArrayIndexOutOfBoundsException("nie ma rozdzialu o nr. " + nr);
-		return this.naglowek+"\n"+this.rozd.get(nr).toString();
+	public String getArt(int nr) {
+		if(nr<=0)
+			throw new ArrayIndexOutOfBoundsException("Artykul musi byc liczba dodatnia");
+		for (int i = 0; i < this.rozd.size(); i++) {
+			Rozdzial r = this.rozd.get(i);
+			if (nr <= r.getMaxArt())
+				return naglowek+ "\n"+ r.getArt(nr);
+		}
+		throw new ArrayIndexOutOfBoundsException("brak artykulu o nr. " + nr);
 	}
 
-	public String getRozdzialArt(int roz, int art) {
-		if (roz >= this.rozd.size() || roz < 0)
-			throw new ArrayIndexOutOfBoundsException("nie ma rozdzialu o nr. " + roz);
-		return this.naglowek+"\n"+this.rozd.get(roz).getArt(art).toString();
+	public String getArt(int nrA, int nrB) {
+		if(nrA<=0)
+			throw new ArrayIndexOutOfBoundsException("Artykul musi byc liczba dodatnia");
+		if (nrA > nrB)
+			throw new ArrayIndexOutOfBoundsException("1. arg. " + nrA + " ma byc niewiekszy niz 2. arg. " + nrB);
+		String ret = naglowek+"\n";
+		for (int i = 0; i < this.rozd.size(); i++) {
+			Rozdzial r = this.rozd.get(i);
+			if (nrA <= r.getMaxArt()) {
+				if (nrB <= r.getMaxArt()) {
+					ret = ret + r.getArt(nrA, nrB);
+					return ret;
+				}
+				ret = ret + r.getArt(nrA, r.getMaxArt());
+				nrA = r.getMaxArt() + 1;
+			}
+		}
+		if (!ret.equals(naglowek+"\n") && nrA==nrB)
+			return ret;
+		throw new ArrayIndexOutOfBoundsException("brak artykulu o nr. " + nrA);
 	}
+	public String getRozdz(int nr){
+		if(nr<0)
+			throw new ArrayIndexOutOfBoundsException("Rozdzial musi byc liczba dodatnia");
+		if(nr>rozd.size())
+			throw new ArrayIndexOutOfBoundsException("brak Rozdzialu "+nr);
+		return naglowek+"\n"+rozd.get(nr).toString();
 
-	public String getRozdzialArt(int roz, int artstart, int artend) {
-		if (roz >= this.rozd.size() || roz < 0)
-			throw new ArrayIndexOutOfBoundsException("nie ma rozdzialu o nr. " + roz);
-		return this.naglowek+"\n"+this.rozd.get(roz).getArt(artstart, artend).toString();
 	}
 }

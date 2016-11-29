@@ -1,15 +1,19 @@
 package agh.obiektow.proj;
 
 public class Artykul {
-	String napis = "";
+	String napis = null;
 	int artNr;
 
 	public Artykul(int art) {
 		this.artNr = art;
 	}
 
+	public int getNr() {
+		return artNr;
+	}
+
 	public void add(String s) {
-		if (napis.equals(""))
+		if (napis == null)
 			napis = s;
 		else
 			napis = napis + " " + s;
