@@ -3,13 +3,12 @@ package agh.obiektow.proj;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class Wczytaj {
 
-	public static Konstytucja odczytaj(String nazwa) {
+	public static Konstytucja odczytaj(String nazwa) throws FileNotFoundException {
 		Pattern newArt = Pattern.compile("Art\\. [0-9]+\\.?");
 		Pattern pomin = Pattern.compile("©Kancelaria Sejmu|[0-9]+\\-[0-9]+\\-[0-9]+|.?");
 		Pattern newRozd = Pattern.compile("Rozdzia³ [IVX]+");
@@ -31,12 +30,11 @@ public class Wczytaj {
 			while (scan.hasNextLine()) {
 				String s = scan.nextLine();
 				if (artNr == 29) {
-					System.out.print("");
-					;
+					//System.out.print("");
 				}
 				// pominiecie
 				if (pomin.matcher(s).matches()) {
-					System.out.println("pominieto: " + s);
+					//System.out.println("pominieto: " + s);
 					continue;
 				}
 				// utworzenie nowego artykulu
@@ -46,7 +44,7 @@ public class Wczytaj {
 					isPominAddArt = false;
 					art = new Artykul(artNr++);
 					art.add(s);
-					System.out.println("utworzono nowy artykul " + s);
+					//System.out.println("utworzono nowy artykul " + s);
 					isNowaLinia = true;
 					continue;
 				}
@@ -56,8 +54,8 @@ public class Wczytaj {
 					kon.addRozdz(rozd);
 					rozd = new Rozdzial(rozdNr++);
 					rozd.setNagRoz(s);
-					System.out.println("utworzono nowy rozdzial: ");
-					System.out.println("dodano naglowek rozdzialu: " + s);
+					//System.out.println("utworzono nowy rozdzial: ");
+					//System.out.println("dodano naglowek rozdzialu: " + s);
 					isPominAddArt = true;
 					isWczytacNaglowek = true;
 					continue;
@@ -69,19 +67,19 @@ public class Wczytaj {
 						kon.setNag(scan.nextLine());
 						kon.setNag(scan.nextLine());
 						hasKonNaglowek = true;
-						System.out.println("dodano tytul konstytucji");
+						//System.out.println("dodano tytul konstytucji");
 						continue;
 					}
 					if (isPominAddArt && isWczytacNaglowek) {
 						isWczytacNaglowek = false;
 						rozd.setNagText(s);
-						System.out.println("dodano naglowek tekst: " + s);
+						//System.out.println("dodano naglowek tekst: " + s);
 					} else {
 						if (!isPominAddArt)
 							rozd.addArt(art);
 						rozd.setPodNag(s);
 						isPominAddArt = true;
-						System.out.println("dodano subnaglowek: " + s);
+						//System.out.println("dodano subnaglowek: " + s);
 					}
 					continue;
 				}
@@ -89,7 +87,7 @@ public class Wczytaj {
 				if (newLine.matcher(s).matches()) {
 					isNowaLinia = false;
 					art.addln();
-					System.out.println("dodano \"\\n\" a nastepnie: ");
+					//System.out.println("dodano \"\\n\" a nastepnie: ");
 				}
 				// koniec lini np."urzeczywistniaj¹-"
 				if (endLine.matcher(s).matches()) {
@@ -97,14 +95,14 @@ public class Wczytaj {
 					if (hasLastCharMinus) {
 						hasLastCharMinus = false;
 						art.addNoSpace(s);
-						System.out.println("dolaczono: " + s);
+						//System.out.println("dolaczono: " + s);
 					} else {
 						if (isNowaLinia) {
 							isNowaLinia = false;
 							art.addln();
 						}
 						art.add(s);
-						System.out.println("dodano: " + s);
+						//System.out.println("dodano: " + s);
 					}
 					hasLastCharMinus = true;
 					continue;
@@ -113,22 +111,18 @@ public class Wczytaj {
 				if (hasLastCharMinus) {
 					hasLastCharMinus = false;
 					art.addNoSpace(s);
-					System.out.println("dolaczono: " + s);
+					//System.out.println("dolaczono: " + s);
 				} else {
 					if (isNowaLinia) {
 						isNowaLinia = false;
 						art.addln();
 					}
 					art.add(s);
-					System.out.println("dodano: " + s);
+					//System.out.println("dodano: " + s);
 				}
 			}
 			rozd.addArt(art);
 			kon.addRozdz(rozd);
-		} catch (FileNotFoundException e) {
-			System.out.println("Nie znaleziono pliku \"" + nazwa + "\" ");
-		} catch (InputMismatchException a) {
-			System.out.println("Niedopasowano " + a);
 		}
 		return kon;
 	}

@@ -1,8 +1,8 @@
 package agh.obiektow.proj;
 
 public class Artykul {
-	String napis = null;
-	int artNr;
+	private String napis = null;
+	private int artNr;
 
 	public Artykul(int art) {
 		this.artNr = art;

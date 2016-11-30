@@ -57,13 +57,15 @@ public class Rozdzial {
 			ret = this.nagRoz + "\n";
 		if (this.nagText != null)
 			ret = ret + this.nagText + "\n";
+		String podtytul = this.wyszukajPodtytul(nrA);
+		if (podtytul != null && pod.get(nrA) == null)
+			ret = ret + podtytul + "\n";
 		while (nrA <= nrB) {
-			String podtytul = pod.get(nrA);
+			podtytul = pod.get(nrA);
 			if (podtytul != null) {
 				ret = ret + podtytul + "\n";
 			}
-			ret = ret + this.art.get(nrA).toString() + "\n";
-			nrA++;
+			ret = ret + this.art.get(nrA++).toString() + "\n";
 		}
 		return ret;
 	}
@@ -78,5 +80,12 @@ public class Rozdzial {
 		if (art.size() == 0)
 			throw new ArrayIndexOutOfBoundsException("rozdzial " + rozdNr + " jest pusty");
 		return art.get(0).getNr();
+	}
+	
+	private String wyszukajPodtytul(int nrA) {
+		String ret = null;
+		for (int key = 1; key < nrA; key++)
+			ret = pod.get(key);
+		return ret;
 	}
 }
