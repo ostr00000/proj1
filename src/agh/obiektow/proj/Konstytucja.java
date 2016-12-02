@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Konstytucja {
-	List<Rozdzial> rozd;
-	String naglowek;
+	private List<Rozdzial> rozd;
+	private String naglowek;
 
 	public Konstytucja() {
 		this.rozd = new ArrayList<>();
@@ -23,19 +23,20 @@ public class Konstytucja {
 		this.rozd.add(r);
 	}
 
-	public String getArt(int nr) {
-		/*
-		 * if (nr <= 0) throw new
-		 * ArrayIndexOutOfBoundsException("Artykul musi byc liczba dodatnia");
-		 * for (int i = 0; i < this.rozd.size(); i++) { Rozdzial r =
-		 * this.rozd.get(i); if (nr <= r.getMaxArt()) return naglowek + "\n" +
-		 * r.getArt(nr); } throw new
-		 * ArrayIndexOutOfBoundsException("brak artykulu o nr. " + nr);
-		 */
-		return this.getArt(nr, nr);
+	public void wypisz(ArgumentyProgramu arg) {
+		String napis;
+		if (arg.czyRozdzial)
+			napis = this.getRozdz(arg.arg1);
+		else {
+			if (arg.czy2Parametry)
+				napis = this.getArt(arg.arg1, arg.arg2);
+			else
+				napis = this.getArt(arg.arg1, arg.arg1);
+		}
+		System.out.println(napis);
 	}
 
-	public String getArt(int nrA, int nrB) {
+	private String getArt(int nrA, int nrB) {
 		if (nrA <= 0)
 			throw new ArrayIndexOutOfBoundsException("Artykul musi byc liczba dodatnia");
 		if (nrA > nrB)
@@ -57,7 +58,7 @@ public class Konstytucja {
 		throw new ArrayIndexOutOfBoundsException("brak artykulu o nr. " + nrA);
 	}
 
-	public String getRozdz(int nr) {
+	private String getRozdz(int nr) {
 		if (nr < 0)
 			throw new ArrayIndexOutOfBoundsException("Rozdzial musi byc liczba dodatnia");
 		if (nr > rozd.size())

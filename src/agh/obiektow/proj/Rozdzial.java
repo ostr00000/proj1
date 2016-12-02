@@ -34,6 +34,7 @@ public class Rozdzial {
 	}
 
 	public void addArt(Artykul a) {
+		a.convertStrBuild();
 		this.art.add(a);
 	}
 

@@ -2,6 +2,7 @@ package agh.obiektow.proj;
 
 public class Artykul {
 	private String napis = null;
+	private StringBuilder build =null;
 	private int artNr;
 
 	public Artykul(int art) {
@@ -13,24 +14,28 @@ public class Artykul {
 	}
 
 	public void add(String s) {
-		if (napis == null)
-			napis = s;
+		if (build == null)
+			build = new StringBuilder(s);
 		else
-			napis = napis + " " + s;
+			build = build.append(" ").append(s);
 	}
 
 	public void addln() {
-		if (!napis.equals(""))
-			napis = napis + "\n";
+		if (build!=null)
+			build = build.append("\n");
 	}
 
 	public void addNoSpace(String s) {
-		napis = napis + s;
+		build = build.append(s);
 	}
 
 	@Override
 	public String toString() {
 		return napis;
 	}
-
+	
+	public void convertStrBuild(){
+		napis=build.toString();
+	}
+	
 }

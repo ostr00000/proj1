@@ -6,7 +6,7 @@ import java.io.FileReader;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
-public class Wczytaj {
+public class Czytacz {
 
 	public static Konstytucja odczytaj(String nazwa) throws FileNotFoundException {
 		Pattern newArt = Pattern.compile("Art\\. [0-9]+\\.?");
